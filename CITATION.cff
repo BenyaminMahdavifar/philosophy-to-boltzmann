@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: Philosophy to Boltzmann
+message: "If you use this project, please cite it using the metadata below."
+authors:
+  - family-names: Mahdavifar
+    given-names: Benyamin
+repository-code: https://github.com/BenyaminMahdavifar/philosophy-to-boltzmann
+license: CC-BY-4.0
+abstract: >-
+  A scientific presentation of a fully connected neuron model,
+  complete graph information exchange, and a Boltzmann-inspired
+  interpretation of equilibrium and information flow.
