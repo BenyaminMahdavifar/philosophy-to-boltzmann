@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Philosophy to Boltzmann — یک نمایش علمی و حرفه‌ای از مدل نورون Fully Connected و Complete Pentagon" />
+  <title>Philosophy to Boltzmann</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+  <main class="page">
+    <section class="hero panel">
+      <div>
+        <p class="kicker">GitHub Pages · Scientific Presentation</p>
+        <h1>Fully Connected Neuron Model and the Complete Pentagon</h1>
+        <p class="subtitle">
+          این صفحه، ایدهٔ شبکهٔ کاملاً متصل، تبادل دوطرفهٔ اطلاعات و همگرایی به مدل بولتزمن را به یک ارائهٔ تمیز و حرفه‌ای تبدیل می‌کند.
+        </p>
+        <div class="chips">
+          <span>Static site</span>
+          <span>MathJax</span>
+          <span>Deploy ready</span>
+        </div>
+      </div>
+      <aside class="metric-card">
+        <div class="metric"><span>Graph</span><strong>K<sub>5</sub></strong></div>
+        <div class="metric"><span>One neuron cap</span><strong>n − 1</strong></div>
+        <div class="metric"><span>Total directed exchange</span><strong>n(n − 1)</strong></div>
+      </aside>
+    </section>
+
+    <section class="grid two-col">
+      <article class="panel">
+        <h2>Tool</h2>
+        <p>
+          نورون یک واحد پردازشی است که داده را دریافت می‌کند، آن را به اطلاعات تبدیل می‌کند و سپس آن را با دیگر نورون‌ها به اشتراک می‌گذارد.
+        </p>
+      </article>
+
+      <article class="panel">
+        <h2>Goal</h2>
+        <p>
+          هدف، صرفاً کشف رابطه‌های از پیش موجود نیست؛ بلکه ساختن رابطه از دل رابطه‌های موجود است.
+        </p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Philosophy</h2>
+      <p>
+        یادگیری از طریق <strong>ساختن رابطه از رابطه</strong> انجام می‌شود. با مشاهدهٔ حالت‌های مختلف، شبکه رابطه‌های داخلی می‌سازد و بر اساس آن داده‌ها را تفکیک می‌کند.
+      </p>
+    </section>
+
+    <section class="grid two-col">
+      <article class="panel">
+        <h2>Assumption</h2>
+        <p>
+          برای ساختن رابطه‌های جدید، نورون به حداکثر اطلاعات نیاز دارد؛ بنابراین قید ساختار لایه‌ای کنار گذاشته می‌شود و همهٔ نورون‌ها به هم وصل می‌شوند.
+        </p>
+        <p class="formula">\[ K_n \Rightarrow \frac{n(n-1)}{2} \text{ edges} \]</p>
+      </article>
+
+      <article class="panel">
+        <h2>Complete Pentagon</h2>
+        <ul>
+          <li>۵ گره</li>
+          <li>یال دوطرفه بین هر جفت گره</li>
+          <li>در هر لحظه، هر خروجی می‌تواند ورودی دیگری شود</li>
+          <li>ظرفیت کل شبکه: $n(n-1)$</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Reproducibility and Stability</h2>
+      <p>
+        ساختار کاملاً متصل و متقارن باعث می‌شود شبکه با وزن و ورودی یکسان، به همان توزیع تعادلی برسد. این رفتار با مدل بولتزمن هم‌راستا است.
+      </p>
+      <p class="formula">\[ P(\text{state}) = \frac{e^{-E(\text{state})}}{\sum_{\text{all states}} e^{-E}} \]</p>
+    </section>
+
+    <section class="grid two-col">
+      <article class="panel accent">
+        <h2>What makes this deployment professional</h2>
+        <ul>
+          <li>ساختار آماده برای GitHub Pages</li>
+          <li>استایل مستقل و قابل نگهداری</li>
+          <li>پشتیبانی از فرمول‌های علمی</li>
+          <li>مناسب برای مقاله، رزومه و دمو</li>
+        </ul>
+      </article>
+
+      <article class="panel accent-alt">
+        <h2>Deployment path</h2>
+        <ol>
+          <li>commit به branch اصلی</li>
+          <li>اجرای workflow</li>
+          <li>انتشار خودکار روی Pages</li>
+        </ol>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <span>© philosophy-to-boltzmann</span>
+      <span>Designed for GitHub deployment</span>
+    </footer>
+  </main>
+</body>
+</html>
