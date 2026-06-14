@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="صفحهٔ معرفی پروژهٔ Philosophy to Boltzmann" />
+  <title>Philosophy to Boltzmann</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero card">
+      <div class="hero-copy">
+        <p class="eyebrow">GitHub Pages • Project Showcase</p>
+        <h1>مدل نورون Fully Connected و Pentagon</h1>
+        <p class="lead">
+          یک ارائهٔ تمیز و حرفه‌ای برای ایده‌ای که از اتصال کامل نورون‌ها، تبادل دوطرفهٔ اطلاعات و همگرایی به تفسیر بولتزمن می‌سازد.
+        </p>
+        <div class="hero-badges">
+          <span>Static</span>
+          <span>Fast</span>
+          <span>Deploy-ready</span>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="metric">
+          <span>نوع ساختار</span>
+          <strong>Complete Graph $K_n$</strong>
+        </div>
+        <div class="metric">
+          <span>حداکثر ورودی/خروجی هر نورون</span>
+          <strong>$n-1$</strong>
+        </div>
+        <div class="metric">
+          <span>ایدهٔ کلیدی</span>
+          <strong>Information builds by exchange</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid two-up">
+      <article class="card">
+        <h2>صورت مسئله</h2>
+        <p>
+          این پروژه روی یک شبکهٔ کاملاً متصل با ارتباطات دوطرفه تمرکز دارد؛ جایی که هر نورون هم‌زمان هم دریافت‌کننده است و هم فرستنده.
+        </p>
+        <p>
+          هدف، نمایش این است که اطلاعات فقط «یافتن» نیست؛ بلکه «ساختن رابطه از رابطه» است.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>فرض اصلی</h2>
+        <p>
+          برای بیشینه‌سازی اطلاعات، ساختار لایه‌ایِ محدود کنار گذاشته می‌شود و همهٔ نورون‌ها به همهٔ نورون‌ها وصل می‌شوند.
+        </p>
+        <p class="formula">
+          \[
+          K_n \;\Rightarrow\; \frac{n(n-1)}{2} \text{ یال }\quad\text{و}\quad n(n-1) \text{ تبادل جهت‌دار}
+          \]
+        </p>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>رابطهٔ فرمول‌ها</h2>
+      <div class="formula-grid">
+        <div class="formula-box">
+          <span>حداکثر ورودی/خروجی یک نورون</span>
+          <strong>$n-1$</strong>
+        </div>
+        <div class="formula-box">
+          <span>ظرفیت کل تبادل شبکه</span>
+          <strong>$n(n-1)$</strong>
+        </div>
+        <div class="formula-box">
+          <span>پس از حذف یک نورون</span>
+          <strong>$(n-1)^2$</strong>
+        </div>
+      </div>
+      <p>
+        در این روایت، پایداری شبکه از تکرار دریافت → ساخت → اشتراک به‌دست می‌آید و در نهایت به یک حالت تعادل شبیه توزیع بولتزمن نزدیک می‌شود.
+      </p>
+    </section>
+
+    <section class="grid two-up">
+      <article class="card accent">
+        <h2>چرا این نسخه حرفه‌ای است؟</h2>
+        <ul>
+          <li>صفحهٔ اصلی مستقل و سریع</li>
+          <li>استایل جداگانه و قابل نگهداری</li>
+          <li>رندر فرمول‌ها با MathJax</li>
+          <li>آمادهٔ انتشار خودکار با GitHub Actions</li>
+        </ul>
+      </article>
+
+      <article class="card accent-alt">
+        <h2>مسیر انتشار</h2>
+        <ol>
+          <li>کد روی branch اصلی push می‌شود</li>
+          <li>Workflow، فایل‌های سایت را جمع می‌کند</li>
+          <li>GitHub Pages خروجی را منتشر می‌کند</li>
+        </ol>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <span>© philosophy-to-boltzmann</span>
+      <span>GitHub Pages ready</span>
+    </footer>
+  </main>
+</body>
+</html>
