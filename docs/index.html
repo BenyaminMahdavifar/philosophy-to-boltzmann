@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Philosophy to Boltzmann — یک نمایش علمی و حرفه‌ای از مدل نورون Fully Connected و Complete Pentagon" />
-  <title>Philosophy to Boltzmann</title>
+  <meta name="description" content="Fully Connected Neuron Model and the Complete Pentagon — from philosophical foundations to the Boltzmann distribution." />
+  <title>Philosophy → Boltzmann</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <script>
     window.MathJax = {
       tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
@@ -16,105 +15,800 @@
     };
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #07090f;
+      --surface:   #0e1118;
+      --border:    #1c2133;
+      --muted:     #3a4460;
+      --text:      #c8d0e0;
+      --bright:    #eef1f8;
+      --accent:    #4f8eff;
+      --accent2:   #7b5cf0;
+      --green:     #2dd4a0;
+      --orange:    #f59e42;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', sans-serif;
+      --serif: 'Playfair Display', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* ─── LAYOUT ─── */
+    .shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 28px 80px;
+    }
+
+    /* ─── TOPBAR ─── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      max-width: 1100px;
+      margin: 0 auto;
+      gap: 12px;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .logo-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+    }
+    .logo-text {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--bright);
+      letter-spacing: 0.04em;
+    }
+    .topbar-tags { display: flex; gap: 8px; }
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .tag.live { border-color: var(--green); color: var(--green); }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 72px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eye {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--bright);
+      line-height: 1.15;
+      max-width: 680px;
+      margin-bottom: 20px;
+    }
+    .hero-arrow {
+      color: var(--accent);
+      font-style: normal;
+    }
+    .hero-sub {
+      max-width: 560px;
+      color: var(--text);
+      font-size: 16px;
+      margin-bottom: 36px;
+    }
+    .hero-metrics {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      width: fit-content;
+    }
+    .metric {
+      padding: 18px 28px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .metric:last-child { border-right: none; }
+    .metric-val {
+      font-family: var(--mono);
+      font-size: 22px;
+      color: var(--bright);
+      font-weight: 600;
+    }
+    .metric-label {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ─── SECTION TITLES ─── */
+    .section {
+      padding: 56px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-child { border-bottom: none; }
+    .sec-eye {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .sec-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--bright);
+      margin-bottom: 24px;
+    }
+
+    /* ─── GRID ─── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 700px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .hero-metrics { flex-direction: column; }
+      .metric { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+
+    /* ─── CARDS ─── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+    }
+    .card-title {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .card p { color: var(--text); font-size: 14.5px; }
+    .card ul, .card ol {
+      padding-left: 18px;
+      color: var(--text);
+      font-size: 14.5px;
+    }
+    .card li { margin-bottom: 6px; }
+
+    /* ─── FORMULA BLOCK ─── */
+    .formula-block {
+      background: #0a0c14;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-top: 16px;
+      font-size: 16px;
+      color: var(--bright);
+      overflow-x: auto;
+    }
+    .formula-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* ─── INTERACTIVE PENTAGON ─── */
+    .pentagon-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 700px) { .pentagon-wrap { grid-template-columns: 1fr; } }
+
+    #pentagon-svg { width: 100%; max-width: 320px; display: block; margin: 0 auto; }
+
+    .node-info {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .node-info h4 {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .node-stat { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .node-stat:last-child { border-bottom: none; }
+    .node-stat span:first-child { color: var(--muted); }
+    .node-stat span:last-child { font-family: var(--mono); color: var(--bright); }
+
+    /* ─── BOLTZMANN CHART ─── */
+    #boltzmann-canvas { width: 100%; height: 240px; display: block; }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .slider-row input[type=range] {
+      flex: 1;
+      accent-color: var(--accent);
+    }
+    .slider-val {
+      font-family: var(--mono);
+      color: var(--bright);
+      min-width: 50px;
+    }
+
+    /* ─── TIMELINE ─── */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-item {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 16px;
+      padding-bottom: 28px;
+      position: relative;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 6px;
+      position: relative;
+      z-index: 1;
+      margin-left: 11px;
+    }
+    .tl-item:not(:last-child) .tl-dot::after {
+      content: '';
+      position: absolute;
+      left: 50%; top: 14px;
+      transform: translateX(-50%);
+      width: 1px;
+      height: calc(100% + 18px);
+      background: var(--border);
+    }
+    .tl-body {}
+    .tl-title { font-size: 14px; font-weight: 600; color: var(--bright); margin-bottom: 4px; }
+    .tl-desc { font-size: 13.5px; color: var(--text); }
+
+    /* ─── CYCLE DIAGRAM (SVG) ─── */
+    #cycle-svg { width: 100%; max-width: 480px; display: block; margin: 0 auto; }
+
+    /* ─── README BLOCK ─── */
+    .readme-block {
+      background: #0a0c14;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .readme-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .readme-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .readme-content { padding: 20px 24px; font-family: var(--mono); font-size: 13px; color: var(--text); line-height: 1.8; }
+    .readme-content .hl { color: var(--green); }
+    .readme-content .cm { color: var(--muted); }
+    .readme-content .kw { color: var(--accent); }
+    .readme-content .str { color: var(--orange); }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .footer a { color: var(--accent); text-decoration: none; }
+  </style>
 </head>
 <body>
-  <main class="page">
-    <section class="hero panel">
+
+<nav>
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo-dot"></div>
+      <span class="logo-text">philosophy-to-boltzmann</span>
+    </div>
+    <div class="topbar-tags">
+      <span class="tag live">● live</span>
+      <span class="tag">energy-based</span>
+      <span class="tag">K₅</span>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <!-- ─── HERO ─── -->
+  <div class="hero">
+    <p class="hero-eye">Research · Neural Architecture · Energy-Based Models</p>
+    <h1>Fully Connected Neuron Model<br><em class="hero-arrow">→</em> Boltzmann Distribution</h1>
+    <p class="hero-sub">
+      A philosophical derivation of why a fully connected network with bidirectional synapses naturally converges to an energy-based equilibrium — grounded in the complete graph K₅.
+    </p>
+    <div class="hero-metrics">
+      <div class="metric">
+        <span class="metric-val">K<sub style="font-size:14px">n</sub></span>
+        <span class="metric-label">Graph structure</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val">n−1</span>
+        <span class="metric-label">Max per-neuron I/O</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val">n(n−1)</span>
+        <span class="metric-label">Network capacity</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val">(n−1)²</span>
+        <span class="metric-label">Residual inputs</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── FOUNDATIONS ─── -->
+  <div class="section">
+    <p class="sec-eye">01 — Foundations</p>
+    <p class="sec-title">From tool to philosophy</p>
+    <div class="grid-3">
+      <div class="card">
+        <p class="card-title">The Neuron</p>
+        <p>A processing unit that receives data, transforms it into information, then shares it. Its output always exists — even when it is random or neutral.</p>
+      </div>
+      <div class="card">
+        <p class="card-title">The Goal</p>
+        <p>Not merely discovering pre-existing relationships, but <strong style="color:var(--bright)">building new relationships from existing ones</strong> — a generative, constructive stance.</p>
+      </div>
+      <div class="card">
+        <p class="card-title">The Philosophy</p>
+        <p>Learning by <strong style="color:var(--bright)">building relationships from relationships</strong>. The network discriminates data by constructing internal structure across states.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── INTERACTIVE PENTAGON ─── -->
+  <div class="section">
+    <p class="sec-eye">02 — Structure</p>
+    <p class="sec-title">The Complete Pentagon — hover a node</p>
+    <div class="pentagon-wrap">
       <div>
-        <p class="kicker">GitHub Pages · Scientific Presentation</p>
-        <h1>Fully Connected Neuron Model and the Complete Pentagon</h1>
-        <p class="subtitle">
-          این صفحه، ایدهٔ شبکهٔ کاملاً متصل، تبادل دوطرفهٔ اطلاعات و همگرایی به مدل بولتزمن را به یک ارائهٔ تمیز و حرفه‌ای تبدیل می‌کند.
-        </p>
-        <div class="chips">
-          <span>Static site</span>
-          <span>MathJax</span>
-          <span>Deploy ready</span>
+        <svg id="pentagon-svg" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div>
+        <div class="node-info">
+          <h4 id="node-title">Network Overview</h4>
+          <div class="node-stat"><span>Nodes (n)</span><span id="s-nodes">5</span></div>
+          <div class="node-stat"><span>Total edges</span><span id="s-edges">n(n−1)/2 = 10</span></div>
+          <div class="node-stat"><span>Directed pairs</span><span id="s-directed">n(n−1) = 20</span></div>
+          <div class="node-stat"><span>Per-neuron I/O cap</span><span id="s-cap">n−1 = 4</span></div>
+          <div class="node-stat"><span>Residual inputs (−1 node)</span><span id="s-residual">(n−1)² = 16</span></div>
+        </div>
+        <div class="formula-block" style="margin-top:16px">
+          <div class="formula-label">Edge count formula</div>
+          \[ \text{edges} = \frac{n(n-1)}{2}, \quad \text{directed} = n(n-1) \]
         </div>
       </div>
-      <aside class="metric-card">
-        <div class="metric"><span>Graph</span><strong>K<sub>5</sub></strong></div>
-        <div class="metric"><span>One neuron cap</span><strong>n − 1</strong></div>
-        <div class="metric"><span>Total directed exchange</span><strong>n(n − 1)</strong></div>
-      </aside>
-    </section>
+    </div>
+  </div>
 
-    <section class="grid two-col">
-      <article class="panel">
-        <h2>Tool</h2>
-        <p>
-          نورون یک واحد پردازشی است که داده را دریافت می‌کند، آن را به اطلاعات تبدیل می‌کند و سپس آن را با دیگر نورون‌ها به اشتراک می‌گذارد.
+  <!-- ─── INFORMATION CYCLE ─── -->
+  <div class="section">
+    <p class="sec-eye">03 — Dynamics</p>
+    <p class="sec-title">The continuous information cycle</p>
+    <div class="grid-2">
+      <div>
+        <svg id="cycle-svg" viewBox="0 0 480 200" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
+        <p style="margin-top:16px; font-size:13.5px; color:var(--text)">
+          Even when a neuron "deliberately" avoids discovering a relationship, this cycle holds. The global network dynamics — not individual neurons — build meaningful structure.
         </p>
-      </article>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <p class="card-title">Crisis of Void</p>
+          <p>Under the uncertainty principle, a neuron may produce no meaningful relationship. But because it always emits an output, the cycle never breaks — even a random signal is an input for all connected neurons.</p>
+        </div>
+        <div class="card">
+          <p class="card-title">Bandwidth maximisation</p>
+          <p>Full connectivity means information is never bottlenecked. Every output is simultaneously available to every other neuron — this is the maximum achievable exchange rate for a network of n units.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <article class="panel">
-        <h2>Goal</h2>
-        <p>
-          هدف، صرفاً کشف رابطه‌های از پیش موجود نیست؛ بلکه ساختن رابطه از دل رابطه‌های موجود است.
+  <!-- ─── BOLTZMANN ─── -->
+  <div class="section">
+    <p class="sec-eye">04 — Convergence</p>
+    <p class="sec-title">Connection to the Boltzmann distribution</p>
+    <div class="grid-2">
+      <div>
+        <div class="formula-block">
+          <div class="formula-label">Boltzmann probability</div>
+          \[ P(\text{state}) = \frac{e^{-E(\text{state}) / T}}{\displaystyle\sum_{\text{all states}} e^{-E / T}} \]
+        </div>
+        <p style="margin-top:18px; font-size:14px; color:var(--text)">
+          The fully connected, symmetric structure guarantees that with fixed weights and the same input, the network converges to the same equilibrium distribution. Information is redistributed — not lost — to reach minimum energy.
         </p>
-      </article>
-    </section>
+        <div class="formula-block" style="margin-top:16px">
+          <div class="formula-label">Advantage over SOM</div>
+          \[ P(\mathbf{x}) \text{ explicit} \implies \text{higher-order statistics captured} \]
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <p class="card-title">Temperature T — interactive</p>
+          <canvas id="boltzmann-canvas"></canvas>
+          <div class="slider-row">
+            <span>T</span>
+            <input type="range" id="temp-slider" min="0.1" max="5" step="0.05" value="1.0">
+            <span class="slider-val" id="temp-val">1.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <section class="panel">
-      <h2>Philosophy</h2>
-      <p>
-        یادگیری از طریق <strong>ساختن رابطه از رابطه</strong> انجام می‌شود. با مشاهدهٔ حالت‌های مختلف، شبکه رابطه‌های داخلی می‌سازد و بر اساس آن داده‌ها را تفکیک می‌کند.
-      </p>
-    </section>
+  <!-- ─── PROPERTIES ─── -->
+  <div class="section">
+    <p class="sec-eye">05 — Properties</p>
+    <p class="sec-title">Reproducibility and stability</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--accent)"></div>
+        <div class="tl-body">
+          <div class="tl-title">Reproducibility</div>
+          <div class="tl-desc">Given identical weights and inputs, the fully connected symmetric network always converges to the same equilibrium. Results are deterministic in distribution.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--accent2)"></div>
+        <div class="tl-body">
+          <div class="tl-title">Stability (steady state)</div>
+          <div class="tl-desc">Continuous output exchange drives the network toward a configuration that minimises system energy — the steady state of the Boltzmann model.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--green)"></div>
+        <div class="tl-body">
+          <div class="tl-title">Information conservation</div>
+          <div class="tl-desc">Information is never destroyed; it is redistributed across states. This redistribution is both the mechanism and the goal of the model.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--orange)"></div>
+        <div class="tl-body">
+          <div class="tl-title">Higher-order statistics</div>
+          <div class="tl-desc">Unlike SOM, this model learns both discrimination among data and higher-order statistical relationships — because it maintains an explicit probability distribution.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <section class="grid two-col">
-      <article class="panel">
-        <h2>Assumption</h2>
-        <p>
-          برای ساختن رابطه‌های جدید، نورون به حداکثر اطلاعات نیاز دارد؛ بنابراین قید ساختار لایه‌ای کنار گذاشته می‌شود و همهٔ نورون‌ها به هم وصل می‌شوند.
-        </p>
-        <p class="formula">\[ K_n \Rightarrow \frac{n(n-1)}{2} \text{ edges} \]</p>
-      </article>
+  <!-- ─── README PREVIEW ─── -->
+  <div class="section">
+    <p class="sec-eye">06 — Repository</p>
+    <p class="sec-title">What's inside</p>
+    <div class="readme-block">
+      <div class="readme-bar">
+        <div class="readme-dot" style="background:#ff5f56"></div>
+        <div class="readme-dot" style="background:#ffbd2e"></div>
+        <div class="readme-dot" style="background:#27c93f"></div>
+        <span style="font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:8px">README.md</span>
+      </div>
+      <div class="readme-content">
+        <span class="hl"># Philosophy to Boltzmann</span><br><br>
+        <span class="cm">## Overview</span><br>
+        A philosophical and mathematical derivation of the <span class="kw">Fully Connected Neuron Model</span><br>
+        grounded in the <span class="kw">Complete Pentagon (K₅)</span>.<br><br>
+        <span class="cm">## Key insight</span><br>
+        Abandoning layered structure → <span class="str">maximum information exchange</span> →<br>
+        natural convergence to the <span class="kw">Boltzmann distribution</span>.<br><br>
+        <span class="cm">## Contents</span><br>
+        <span class="hl">docs/</span>  ← this page (GitHub Pages)<br>
+        <span class="hl">*.ipynb</span>  ← full derivation notebook<br>
+      </div>
+    </div>
+  </div>
 
-      <article class="panel">
-        <h2>Complete Pentagon</h2>
-        <ul>
-          <li>۵ گره</li>
-          <li>یال دوطرفه بین هر جفت گره</li>
-          <li>در هر لحظه، هر خروجی می‌تواند ورودی دیگری شود</li>
-          <li>ظرفیت کل شبکه: $n(n-1)$</li>
-        </ul>
-      </article>
-    </section>
+  <footer class="footer">
+    <span>© <a href="https://github.com/BenyaminMahdavifar">BenyaminMahdavifar</a></span>
+    <span>philosophy-to-boltzmann · GitHub Pages</span>
+  </footer>
 
-    <section class="panel">
-      <h2>Reproducibility and Stability</h2>
-      <p>
-        ساختار کاملاً متصل و متقارن باعث می‌شود شبکه با وزن و ورودی یکسان، به همان توزیع تعادلی برسد. این رفتار با مدل بولتزمن هم‌راستا است.
-      </p>
-      <p class="formula">\[ P(\text{state}) = \frac{e^{-E(\text{state})}}{\sum_{\text{all states}} e^{-E}} \]</p>
-    </section>
+</div><!-- /shell -->
 
-    <section class="grid two-col">
-      <article class="panel accent">
-        <h2>What makes this deployment professional</h2>
-        <ul>
-          <li>ساختار آماده برای GitHub Pages</li>
-          <li>استایل مستقل و قابل نگهداری</li>
-          <li>پشتیبانی از فرمول‌های علمی</li>
-          <li>مناسب برای مقاله، رزومه و دمو</li>
-        </ul>
-      </article>
+<!-- ─── SCRIPTS ─── -->
+<script>
+// ── Pentagon SVG ──────────────────────────────────
+(function() {
+  const svg = document.getElementById('pentagon-svg');
+  const n = 5;
+  const cx = 140, cy = 140, r = 100;
+  const nodes = Array.from({length: n}, (_, i) => {
+    const a = (Math.PI * 2 * i / n) - Math.PI / 2;
+    return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a), id: i };
+  });
+  const labels = ['A', 'B', 'C', 'D', 'E'];
 
-      <article class="panel accent-alt">
-        <h2>Deployment path</h2>
-        <ol>
-          <li>commit به branch اصلی</li>
-          <li>اجرای workflow</li>
-          <li>انتشار خودکار روی Pages</li>
-        </ol>
-      </article>
-    </section>
+  // edges
+  for (let i = 0; i < n; i++) {
+    for (let j = i+1; j < n; j++) {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', nodes[i].x); line.setAttribute('y1', nodes[i].y);
+      line.setAttribute('x2', nodes[j].x); line.setAttribute('y2', nodes[j].y);
+      line.setAttribute('stroke', '#1c2133');
+      line.setAttribute('stroke-width', '1.5');
+      line.setAttribute('class', `edge edge-${i} edge-${j}`);
+      line.dataset.a = i; line.dataset.b = j;
+      svg.appendChild(line);
+    }
+  }
 
-    <footer class="footer">
-      <span>© philosophy-to-boltzmann</span>
-      <span>Designed for GitHub deployment</span>
-    </footer>
-  </main>
+  // nodes
+  nodes.forEach((nd, i) => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.style.cursor = 'pointer';
+
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', nd.x); circle.setAttribute('cy', nd.y);
+    circle.setAttribute('r', '18');
+    circle.setAttribute('fill', '#0e1118');
+    circle.setAttribute('stroke', '#1c2133');
+    circle.setAttribute('stroke-width', '2');
+    circle.setAttribute('id', `node-circle-${i}`);
+
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', nd.x); text.setAttribute('y', nd.y + 5);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('fill', '#c8d0e0');
+    text.setAttribute('font-size', '13');
+    text.setAttribute('font-family', 'JetBrains Mono, monospace');
+    text.textContent = labels[i];
+
+    g.appendChild(circle); g.appendChild(text);
+    svg.appendChild(g);
+
+    g.addEventListener('mouseenter', () => highlightNode(i));
+    g.addEventListener('mouseleave', resetPentagon);
+  });
+
+  function highlightNode(id) {
+    // dim all edges
+    svg.querySelectorAll('line').forEach(l => {
+      l.setAttribute('stroke', '#13182b');
+      l.setAttribute('stroke-width', '1.5');
+    });
+    // highlight edges connected to this node
+    svg.querySelectorAll(`line.edge-${id}`).forEach(l => {
+      l.setAttribute('stroke', '#4f8eff');
+      l.setAttribute('stroke-width', '2.5');
+    });
+    // dim circles
+    nodes.forEach((_, i) => {
+      const c = document.getElementById(`node-circle-${i}`);
+      c.setAttribute('stroke', i === id ? '#4f8eff' : '#1c2133');
+      c.setAttribute('fill', i === id ? '#0d1624' : '#0e1118');
+    });
+    // update info
+    document.getElementById('node-title').textContent = `Neuron ${labels[id]} — connections`;
+    document.getElementById('s-nodes').textContent = '5';
+    document.getElementById('s-edges').textContent = `connects to ${n-1} neurons`;
+    document.getElementById('s-directed').textContent = `${n-1} out + ${n-1} in`;
+    document.getElementById('s-cap').textContent = `n−1 = ${n-1}`;
+    document.getElementById('s-residual').textContent = `(n−1)² = ${(n-1)*(n-1)}`;
+  }
+
+  function resetPentagon() {
+    svg.querySelectorAll('line').forEach(l => {
+      l.setAttribute('stroke', '#1c2133');
+      l.setAttribute('stroke-width', '1.5');
+    });
+    nodes.forEach((_, i) => {
+      const c = document.getElementById(`node-circle-${i}`);
+      c.setAttribute('stroke', '#1c2133');
+      c.setAttribute('fill', '#0e1118');
+    });
+    document.getElementById('node-title').textContent = 'Network Overview';
+    document.getElementById('s-edges').textContent = 'n(n−1)/2 = 10';
+    document.getElementById('s-directed').textContent = 'n(n−1) = 20';
+    document.getElementById('s-cap').textContent = 'n−1 = 4';
+    document.getElementById('s-residual').textContent = '(n−1)² = 16';
+  }
+})();
+
+// ── Cycle SVG ─────────────────────────────────────
+(function() {
+  const svg = document.getElementById('cycle-svg');
+  const steps = [
+    { label: 'Receive\nData', x: 80, y: 100, color: '#4f8eff' },
+    { label: 'Build\nInformation', x: 240, y: 100, color: '#7b5cf0' },
+    { label: 'Share\nInformation', x: 400, y: 100, color: '#2dd4a0' },
+  ];
+
+  // arrows between
+  [[0,1],[1,2]].forEach(([a,b]) => {
+    const ax = steps[a].x + 52, ay = steps[a].y;
+    const bx = steps[b].x - 52, by = steps[b].y;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',ax); line.setAttribute('y1',ay);
+    line.setAttribute('x2',bx); line.setAttribute('y2',by);
+    line.setAttribute('stroke','#1c2133'); line.setAttribute('stroke-width','2');
+    line.setAttribute('marker-end','url(#arrowhead)');
+    svg.appendChild(line);
+  });
+
+  // curved back arrow
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d',`M 400 118 C 400 160, 80 160, 80 118`);
+  path.setAttribute('fill','none'); path.setAttribute('stroke','#1c2133');
+  path.setAttribute('stroke-width','2'); path.setAttribute('stroke-dasharray','5 3');
+  path.setAttribute('marker-end','url(#arrowhead)');
+  svg.appendChild(path);
+
+  // arrowhead marker
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML = `<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3a4460"/></marker>`;
+  svg.insertBefore(defs, svg.firstChild);
+
+  // node circles
+  steps.forEach(s => {
+    const labels = s.label.split('\n');
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx',s.x); circle.setAttribute('cy',s.y);
+    circle.setAttribute('r','48'); circle.setAttribute('fill','#0e1118');
+    circle.setAttribute('stroke',s.color); circle.setAttribute('stroke-width','1.5');
+    g.appendChild(circle);
+
+    labels.forEach((ln, li) => {
+      const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x',s.x); t.setAttribute('y', s.y - 8 + li * 20);
+      t.setAttribute('text-anchor','middle');
+      t.setAttribute('fill',s.color);
+      t.setAttribute('font-size','12');
+      t.setAttribute('font-family','Inter,sans-serif');
+      t.setAttribute('font-weight','600');
+      t.textContent = ln;
+      g.appendChild(t);
+    });
+
+    svg.appendChild(g);
+  });
+})();
+
+// ── Boltzmann Chart ───────────────────────────────
+(function() {
+  const canvas = document.getElementById('boltzmann-canvas');
+  const ctx = canvas.getContext('2d');
+  const slider = document.getElementById('temp-slider');
+  const valEl = document.getElementById('temp-val');
+
+  function dpr() { return window.devicePixelRatio || 1; }
+  function resize() {
+    const w = canvas.parentElement.clientWidth - 48;
+    const h = 240;
+    canvas.width = w * dpr();
+    canvas.height = h * dpr();
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.scale(dpr(), dpr());
+    draw();
+  }
+
+  const energies = [-2, -1, 0, 1, 2, 3];
+  const stateLabels = ['s₁','s₂','s₃','s₄','s₅','s₆'];
+
+  function boltzmann(T) {
+    const raw = energies.map(e => Math.exp(-e / T));
+    const Z = raw.reduce((a,b) => a+b, 0);
+    return raw.map(v => v / Z);
+  }
+
+  function draw() {
+    const T = parseFloat(slider.value);
+    const probs = boltzmann(T);
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    ctx.clearRect(0,0,w,h);
+
+    const pad = { l:40, r:20, t:16, b:36 };
+    const bw = (w - pad.l - pad.r) / energies.length;
+    const maxP = Math.max(...probs);
+
+    // grid lines
+    ctx.strokeStyle = '#1c2133';
+    ctx.lineWidth = 1;
+    [0.25,0.5,0.75,1].forEach(f => {
+      const y = pad.t + (1-f/1)*(h - pad.t - pad.b);
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+    });
+
+    // bars
+    probs.forEach((p, i) => {
+      const x = pad.l + i * bw + bw*0.1;
+      const bh = (p / (maxP * 1.1)) * (h - pad.t - pad.b);
+      const y = pad.t + (h - pad.t - pad.b) - bh;
+
+      const grad = ctx.createLinearGradient(0, y, 0, y+bh);
+      grad.addColorStop(0, '#4f8eff');
+      grad.addColorStop(1, '#7b5cf088');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.roundRect(x, y, bw*0.8, bh, [4,4,0,0]);
+      ctx.fill();
+
+      // label
+      ctx.fillStyle = '#3a4460';
+      ctx.font = '12px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(stateLabels[i], x + bw*0.4, h - pad.b + 16);
+
+      // prob value
+      ctx.fillStyle = '#c8d0e0';
+      ctx.font = '11px JetBrains Mono, monospace';
+      ctx.fillText(p.toFixed(2), x + bw*0.4, y - 4);
+    });
+  }
+
+  slider.addEventListener('input', () => {
+    valEl.textContent = parseFloat(slider.value).toFixed(2);
+    draw();
+  });
+
+  window.addEventListener('resize', resize);
+  setTimeout(resize, 100);
+})();
+</script>
+
 </body>
 </html>
